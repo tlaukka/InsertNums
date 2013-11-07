@@ -3,11 +3,13 @@ import sublime_plugin
 
 class PromptInsertNumsCommand(sublime_plugin.WindowCommand):
     def run(self, automatic = True):
+        self.automatic = automatic
+
         self.window.show_input_panel(
             'Enter a starting number/character, step and padding.',
             '1 1 0',
             self.insertNums,
-            self.insertNums if automatic else None,
+            self.insertNums if self.automatic else None,
             None
         )
         pass
@@ -16,10 +18,14 @@ class PromptInsertNumsCommand(sublime_plugin.WindowCommand):
         try:
             (current, step, padding, stop) = map(str, text.split(" "))
 
+            print(current, step, padding, stop)
+
             if self.window.active_view():
+                print(self.automatic)
                 self.window.active_view().run_command(
                     "insert_nums",
-                    {"current": current, "step": step, "padding": padding, "stop": stop}
+                    { "current": current, "step": step, "padding": padding, 
+                     "stop": stop, "automatic": self.automatic }
                 )
         except ValueError:
             pass
@@ -28,8 +34,10 @@ class PromptInsertNumsCommand(sublime_plugin.WindowCommand):
 class InsertNumsCommand(sublime_plugin.TextCommand):
     alpha = 'abcdefghijklmnopqrstuvwxyz'
 
-    def run(self, edit, current, step, padding, stop = 0):
-        if int(stop) == 0 or stop == "":
+    def run(self, edit, current, step, padding, stop = 0, automatic = True):
+        print(current, step, padding, stop, automatic)
+        stop = int(stop)
+        if automatic == True or stop == 0:
             if current.isdigit():
                 def tick(counter):
                     return str('%0*d' % (int(padding) + 1, int(current) + counter))
@@ -75,7 +83,6 @@ class InsertNumsCommand(sublime_plugin.TextCommand):
                     counter += int(step)
       
         else:
-            print("STOP")
             stoppedStr = "\n".join(str(i) for i in range(int(current), (int(stop) + 1)))
             self.view.insert(edit, 0, stoppedStr)
                 
