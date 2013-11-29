@@ -217,6 +217,7 @@ And many more ...
 
 ## Contributors
 - [James Brooks](http://james.brooks.so), [@jbrooksuk](https://twitter.com/jbrooksuk)
+- FichteFoll, [@FichteFoll](https://github.com/FichteFoll)
 - Marco Novaro, [@MarcoNovaro](https://github.com/MarcoNovaro)
 - Oleg Geier, [@relikd](https://twitter.com/relikd)
 - Arthur Comben, [@anthillape](https://twitter.com/anthillape)
